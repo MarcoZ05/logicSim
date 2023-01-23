@@ -11,23 +11,29 @@ class Connection {
     this.outputModule.runInputProcess();
   }
 
-  render(ctx) {
+  render(ctx, windowOffset = { x: 0, y: 0 }) {
     ctx.beginPath();
     if (this.powered) ctx.strokeStyle = "#00ff00";
     else ctx.strokeStyle = "#ff0000";
 
     ctx.moveTo(
-      this.inputModule.position.x + this.inputModule.size.w / 2,
-      this.inputModule.position.y + this.inputModule.size.h / 2
+      this.inputModule.position.x +
+        this.inputModule.size.w / 2 +
+        windowOffset.x,
+      this.inputModule.position.y + this.inputModule.size.h / 2 + windowOffset.y
     );
 
     this.points.forEach((point) => {
-      ctx.lineTo(point.x, point.y);
+      ctx.lineTo(point.x + windowOffset.x, point.y + windowOffset.y);
     });
 
     ctx.lineTo(
-      this.outputModule.position.x + this.outputModule.size.w / 2,
-      this.outputModule.position.y + this.outputModule.size.h / 2
+      this.outputModule.position.x +
+        this.outputModule.size.w / 2 +
+        windowOffset.x,
+      this.outputModule.position.y +
+        this.outputModule.size.h / 2 +
+        windowOffset.y
     );
 
     ctx.stroke();

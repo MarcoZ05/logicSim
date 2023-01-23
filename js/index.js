@@ -9,4 +9,4 @@ const simulation = new Simulation(canvas);
 
 test1(simulation);
 
-simulation.render();
+simulation.start();
