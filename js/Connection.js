@@ -17,6 +17,7 @@ class Connection {
     else ctx.strokeStyle = "#ff000090";
     ctx.lineWidth = 5;
     
+    
     ctx.moveTo(
       this.inputModule.position.x +
       this.inputModule.size.w / 2 +
