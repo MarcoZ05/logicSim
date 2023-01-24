@@ -7,11 +7,18 @@ class Simulation {
     this.ctx = canvas.getContext("2d");
 
     this.windowOffset = { x: 100, y: 0 };
+    this.windowZoom = 1
   }
 
   moveWindow(x, y) {
+    // TODO: Zoom
     this.windowOffset.x += x;
     this.windowOffset.y += y;
+    this.render();
+  }
+
+  zoomWindow(x, y, zoom) {
+    // TODO: Zoom
     this.render();
   }
 
@@ -30,10 +37,12 @@ class Simulation {
   render() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.connections.forEach((connection) =>
-      connection.render(this.ctx, this.windowOffset)
+      // TODO: Zoom
+      connection.render(this.ctx, this.windowOffset, this.windowZoom)
     );
     this.modules.forEach((module) =>
-      module.render(this.ctx, this.windowOffset)
+      // TODO: Zoom
+      module.render(this.ctx, this.windowOffset, this.windowZoom)
     );
   }
 
@@ -98,10 +107,16 @@ class Simulation {
     });
   }
 
+  initWindowZoom() {
+    // TODO
+  }
+
+
   start() {
     this.render();
     this.initWindowMovement();
     this.initWindowResize();
+    this.initWindowZoom();
   }
 }
 

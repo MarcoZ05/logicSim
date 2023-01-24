@@ -13,13 +13,14 @@ class Connection {
 
   render(ctx, windowOffset = { x: 0, y: 0 }) {
     ctx.beginPath();
-    if (this.powered) ctx.strokeStyle = "#00ff00";
-    else ctx.strokeStyle = "#ff0000";
-
+    if (this.powered) ctx.strokeStyle = "#00ff0090";
+    else ctx.strokeStyle = "#ff000090";
+    ctx.lineWidth = 5;
+    
     ctx.moveTo(
       this.inputModule.position.x +
-        this.inputModule.size.w / 2 +
-        windowOffset.x,
+      this.inputModule.size.w / 2 +
+      windowOffset.x,
       this.inputModule.position.y + this.inputModule.size.h / 2 + windowOffset.y
     );
 
@@ -29,11 +30,11 @@ class Connection {
 
     ctx.lineTo(
       this.outputModule.position.x +
-        this.outputModule.size.w / 2 +
-        windowOffset.x,
+      this.outputModule.size.w / 2 +
+      windowOffset.x,
       this.outputModule.position.y +
-        this.outputModule.size.h / 2 +
-        windowOffset.y
+      this.outputModule.size.h / 2 +
+      windowOffset.y
     );
 
     ctx.stroke();
