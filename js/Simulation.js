@@ -7,18 +7,17 @@ class Simulation {
     this.ctx = canvas.getContext("2d");
 
     this.windowOffset = { x: 100, y: 0 };
-    this.windowZoom = 1
+    this.windowZoom = 1;
   }
 
   moveWindow(x, y) {
-    // TODO: Zoom
-    this.windowOffset.x += x;
-    this.windowOffset.y += y;
+    this.windowOffset.x += x / this.windowZoom;
+    this.windowOffset.y += y / this.windowZoom;
     this.render();
   }
 
   zoomWindow(x, y, zoom) {
-    // TODO: Zoom
+    this.windowZoom += zoom;
     this.render();
   }
 
@@ -37,11 +36,9 @@ class Simulation {
   render() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.connections.forEach((connection) =>
-      // TODO: Zoom
       connection.render(this.ctx, this.windowOffset, this.windowZoom)
     );
     this.modules.forEach((module) =>
-      // TODO: Zoom
       module.render(this.ctx, this.windowOffset, this.windowZoom)
     );
   }
@@ -52,10 +49,14 @@ class Simulation {
       const y = event.clientY;
 
       if (
-        x > module.position.x + this.windowOffset.x &&
-        x < module.position.x + module.size.w + this.windowOffset.x &&
-        y > module.position.y + this.windowOffset.y &&
-        y < module.position.y + module.size.h + this.windowOffset.y
+        x > (module.position.x + this.windowOffset.x) * this.windowZoom &&
+        x <
+          (module.position.x + this.windowOffset.x + module.size.w) *
+            this.windowZoom &&
+        y > (module.position.y + this.windowOffset.y) * this.windowZoom &&
+        y <
+          (module.position.y + this.windowOffset.y + module.size.h) *
+            this.windowZoom
       ) {
         module.runClickProcess();
         module.runInputProcess();
@@ -108,9 +109,21 @@ class Simulation {
   }
 
   initWindowZoom() {
-    // TODO
-  }
+    this.canvas.addEventListener("wheel", (event) => {
+      event.preventDefault();
 
+      const zoomDirection = Math.sign(event.deltaY);
+
+      const x = event.clientX;
+      const y = event.clientY;
+
+      if (this.windowZoom < 0.2 && zoomDirection > 0) return;
+      if (this.windowZoom > 1.5 && zoomDirection < 0) return;
+
+      this.zoomWindow(1 / x, 1 / y, -zoomDirection / 10 * this.windowZoom);
+      console.log(this.windowZoom);
+    });
+  }
 
   start() {
     this.render();

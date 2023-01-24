@@ -31,23 +31,23 @@ class Module {
     this.input.push(connection);
   }
 
-  render(ctx, windowOffset = { x: 0, y: 0 }) {
+  render(ctx, windowOffset = { x: 0, y: 0 }, windowZoom = 1) {
     if (this.powered) ctx.fillStyle = "#00ff00";
     else ctx.fillStyle = "#ff0000";
     ctx.fillRect(
-      this.position.x + windowOffset.x,
-      this.position.y + windowOffset.y,
-      this.size.w,
-      this.size.h
+      (this.position.x + windowOffset.x) * windowZoom,
+      (this.position.y + windowOffset.y) * windowZoom,
+      this.size.w * windowZoom,
+      this.size.h * windowZoom
     );
     ctx.fillStyle = "#000000";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = this.size.h / 4 + "px Arial";
+    ctx.font = (this.size.h / 2) * windowZoom + "px Arial";
     ctx.fillText(
       this.name,
-      this.position.x + this.size.w / 2 + windowOffset.x,
-      this.position.y + this.size.h / 2 + windowOffset.y
+      (this.position.x + windowOffset.x + this.size.w / 2) * windowZoom,
+      (this.position.y + windowOffset.y + this.size.h / 2) * windowZoom
     );
   }
 
