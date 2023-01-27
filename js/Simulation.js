@@ -1,10 +1,12 @@
 class Simulation {
-  constructor(canvas) {
+  constructor(canvas, selectionContainer) {
     this.modules = [];
     this.connections = [];
 
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+
+    this.selectionContainer = selectionContainer;
 
     this.windowOffset = { x: 100, y: 0 };
     this.windowZoom = 1;
@@ -18,6 +20,8 @@ class Simulation {
 
   zoomWindow(x, y, zoom) {
     this.windowZoom += zoom;
+    this.windowOffset.x -= (Math.sign(zoom) * x) / this.windowZoom / 10;
+    this.windowOffset.y -= (Math.sign(zoom) * y) / this.windowZoom / 10;
     this.render();
   }
 
@@ -120,12 +124,14 @@ class Simulation {
       if (this.windowZoom < 0.2 && zoomDirection > 0) return;
       if (this.windowZoom > 1.5 && zoomDirection < 0) return;
 
-      this.zoomWindow(1 / x, 1 / y, -zoomDirection / 10 * this.windowZoom);
-      console.log(this.windowZoom);
+      this.zoomWindow(x, y, (-zoomDirection / 10) * this.windowZoom);
     });
   }
 
-  start() {
+  initSelectionContainer() {
+    const modules = [];
+
+    start() {
     this.render();
     this.initWindowMovement();
     this.initWindowResize();
